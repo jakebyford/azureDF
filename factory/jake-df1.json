@@ -1,0 +1,9 @@
+{
+	"name": "jake-df1",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "0a6d350d-3b16-421b-a5cd-d4142437c850",
+		"tenantId": "ce0db214-cf5e-4aa5-9781-bd8d3fa6c4c3"
+	}
+}
