@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "DS1",
+						"referenceName": "ds1",
 						"type": "DatasetReference"
 					},
 					"name": "source1"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DS_dest",
+						"referenceName": "ds_azure",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -41,16 +41,23 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 filter((abs(toInteger(year)) >= 1910 && abs(toInteger(year)) <= 2000) && rlike(genres, 'Comedy')) ~> filter1",
+				"source1 filter(toInteger(year) >= 1910 && toInteger(year) <= 2000 && rlike(genres, \"Comedy\")) ~> filter1",
 				"filter1 aggregate(groupBy(year),",
 				"     Rating = avg(toInteger(Rating))) ~> aggregate1",
 				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
+				"     input(",
+				"          year as string,",
+				"          Rating as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 			]
 		}
 	}
